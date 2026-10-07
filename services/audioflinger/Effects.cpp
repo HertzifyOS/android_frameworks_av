@@ -3297,7 +3297,8 @@ NO_THREAD_SAFETY_ANALYSIS
 
     if (mThreadType == IAfThreadBase::SPATIALIZER) {
         if (c->sessionId() == AUDIO_SESSION_OUTPUT_MIX) {
-            return t->mixerChannelMask();
+            // Global effects run on the combined post-spatializer output.
+            return t->channelMask();
         } else if (c->sessionId() == AUDIO_SESSION_OUTPUT_STAGE) {
             if (c->isFirstEffect_l(id)) {
                 return t->mixerChannelMask();
@@ -3345,8 +3346,7 @@ NO_THREAD_SAFETY_ANALYSIS
                 return t->channelMask();
             }
         } else {
-            return (c->sessionId() == AUDIO_SESSION_OUTPUT_MIX) ? t->mixerChannelMask()
-                                                                : t->channelMask();
+            return t->channelMask();
         }
     } else {
         return t->channelMask();
